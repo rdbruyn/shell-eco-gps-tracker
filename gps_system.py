@@ -7,6 +7,8 @@ from pathlib import Path
 
 
 def getDistance(coord1, coord2):
+    """ Uses the Haversine formula to calculate the distance between two
+        coordinates given in the (latitude, longitude) in decimal format """
     lat1 = math.radians(coord1[0])
     lat2 = math.radians(coord2[0])
     lon1 = math.radians(coord1[1])
@@ -24,12 +26,17 @@ def getDistance(coord1, coord2):
 
 
 def getVelocity(coord1, coord2):
+    """ Returns the velocity travelled between two coordinates. Format should
+        resemble (latitude, longitude, time) """
     distance = getDistance(coord1, coord2)
     delta_t = abs(coord1[2] - coord2[2])
     return distance / delta_t
 
 
 def checkValidity(coord1, coord2):
+    """ If the adafruit gps is not working properly, None coordinate values may
+        be returned through the serial port. This function returns True if
+        coordinates are valid, and False if coordinates aren't. """
     for i in coord1:
         if i is None:
             return False
@@ -42,7 +49,7 @@ def checkValidity(coord1, coord2):
 
 
 def main():
-    # Set up file logging
+    # Set up file logging based on timestamp
     base_path = Path() / 'log'
     if not base_path.is_dir():
         base_path.mkdir()
